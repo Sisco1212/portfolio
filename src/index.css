@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-jost: "Jost", sans-serif;
+}
+
+:root {
+--bg: #020617;
+--card: #071124;
+--blue: #2563eb;
+--lightBlue: #60a5fa;
+--text: #f8fafc;
+}
+
+html {
+scroll-behavior: smooth;
+}
+
+body {
+background: radial-gradient(circle at top, rgba(7, 27, 70, 0.12), transparent 30%),
+#000107;
+color: white;
+overflow-x: hidden;
+font-family: "Montserrat", sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+font-family: "Jost", sans-serif;
+}
+
+::-webkit-scrollbar {
+width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+background: #2563eb;
+border-radius: 999px;
+}
+
+.glass {
+background: rgba(255,255,255,0.03);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255,255,255,0.06);
+}
+
+.glow {
+box-shadow:
+0 0 20px rgba(37,99,235,.4),
+0 0 60px rgba(37,99,235,.15);
+}
+
+.nav-active {
+color: #60a5fa;
+position: relative;
+}
+
+.nav-active::after {
+content: "";
+position: absolute;
+width: 100%;
+height: 2px;
+background: #60a5fa;
+left: 0;
+bottom: -5px;
+border-radius: 999px;
+}
+
+.noise {
+position: fixed;
+inset: 0;
+opacity: .03;
+pointer-events: none;
+background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+}
+
+.section-padding {
+padding: 120px 7%;
+}
+
+.blue-gradient {
+background: linear-gradient(
+135deg,
+#1d4ed8,
+#2563eb,
+#60a5fa
+);
+}
+
+.project-overlay {
+background: linear-gradient(
+to top,
+rgba(2,6,23,.95),
+rgba(2,6,23,.2)
+);
+}
+
+.glow {
+    background: rgba(7, 17, 36, 0.45);
+backdrop-filter: blur(20px);
+}
