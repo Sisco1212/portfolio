@@ -1,112 +1,286 @@
-import {
-FaUser,
-FaEnvelope,
-FaLocationDot,
-} from "react-icons/fa6";
 
+import { useRef } from "react";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const details = [
+  {
+    label: "Based in",
+    value: "Nigeria",
+  },
+  {
+    label: "Specialization",
+    value: "Full Stack & Creative Development",
+  },
+  {
+    label: "Availability",
+    value: "Open to opportunities",
+  },
+];
 
 export default function About() {
-return ( <section
-   id="about"
-   className="section-padding"
- > <div className="grid lg:grid-cols-2 gap-10">
+  const aboutRef = useRef<HTMLElement>(null);
 
-    <div className=" p-10">
-      <p className="uppercase text-blue-400 tracking-[5px] text-sm">
-        About Me
-      </p>
+ 
+useGSAP(
+  () => {
+    const section = aboutRef.current;
+    if (!section) return;
 
-      <h2 className="text-5xl mt-4 font-bold uppercase">
-        About Me
-      </h2>
+    const media = gsap.matchMedia();
 
-      <p className="mt-8 text-white/70">
-        I'm Sito, a passionate Front-end Developer
-        and Game Developer focused on building
-        immersive digital experiences with premium
-        UI, cinematic motion and modern frontend
-        technologies.
-      </p>
-
-      {/* <button className="mt-10 px-8 py-4 border border-blue-500 hover:bg-blue-500 transition">
-        Download CV
-      </button> */}
-    </div>
-
-      <div className="relative">
-
-{/* Glow Behind Card */}
-
-  <div
-    className="
-      absolute
-      inset-0
-      scale-50
-      rounded-3xl
-      bg-blue-800/30
-      blur-[70px]
-      -z-10
-    "
-  />
-
-{/* Card */}
-
-  <div
-    className="
-      relative
-      rounded-[20px]
-      p-10
-      space-y-6
-      bg-[#0B1220]/60
-      border
-      border-white/15
-      backdrop-blur-xl
-    "
-  >
-     <div className="flex items-center gap-5 pb-5 border-b border-white/15"> 
-      <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"> 
-      <FaUser className="text-white text-sm" /> 
-      </div> 
-      <div> 
-        <p className="text-white font-bold text-sm"> Name </p> 
-        <h3 className="text-md mt-1 text-white/70"> Sito Patrick </h3> 
-        </div> 
-        </div> 
-        <div className="flex items-center gap-5 pb-5 border-b border-white/15"> 
-        <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"> 
-        <FaEnvelope className="text-white text-sm" /> 
-        </div> 
-        <div> 
-          <p className="text-white font-bold text-sm"> Email </p> 
-          <h3 className="text-md mt-1 text-white/70"> sitopatrick2004@gmail.com </h3> 
-          </div> 
-          </div> 
-          <div className="flex items-center gap-5 pb-5 border-b border-white/15"> 
-          <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"> 
-          <FaLocationDot className="text-white text-sm" /> 
-          </div> 
-          <div> 
-            <p className="text-white font-bold text-sm"> Location </p> 
-            <h3 className="text-md mt-1 text-white/70"> Nigeria </h3> 
-            </div> 
-            </div> 
-            <div className="flex items-center gap-5"> 
-              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center"> 
-              <div className="w-3 h-3 rounded-full bg-green-400" /> 
-              </div> 
-              <div> 
-                <p className="text-white font-bold text-sm"> Availability </p> 
-                <h3 className="text-md mt-1 text-white/70"> Available for work </h3> </div> </div>
-  </div>
-
-</div>
-
-
-     
-
-  </div>
-</section>
-
-
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      
+const eyebrow = section.querySelector("[data-about-eyebrow]");
+const heading = section.querySelector("[data-about-heading]");
+const headingLines = heading?.querySelectorAll<HTMLElement>(
+  "[data-heading-line]"
 );
+
+const copyElements = gsap.utils.toArray<HTMLElement>(
+  "[data-about-copy]",
+  section
+);
+
+const detailsLine = section.querySelector("[data-about-line]");
+const detailsHeading = section.querySelector(
+  "[data-about-details-heading]"
+);
+
+const detailElements = gsap.utils.toArray<HTMLElement>(
+  "[data-about-detail]",
+  section
+);
+
+// Initial states
+gsap.set(copyElements, { autoAlpha: 0, y: 30 });
+
+gsap.set(
+  [detailsLine, detailsHeading, ...detailElements].filter(Boolean),
+  { autoAlpha: 0 }
+);
+
+const introTimeline = gsap.timeline({
+  scrollTrigger: {
+    trigger: heading,
+    start: "top 82%",
+    once: true,
+  },
+});
+
+// Eyebrow
+if (eyebrow) {
+  introTimeline.from(eyebrow, {
+    y: 15,
+    opacity: 0,
+    duration: 0.5,
+    ease: "power3.out",
+  });
+}
+
+// Heading typing animation
+headingLines?.forEach((line) => {
+  introTimeline.fromTo(
+    line,
+    { clipPath: "inset(0 100% 0 0)" },
+    {
+      clipPath: "inset(0 0% 0 0)",
+      duration: 0.6,
+      ease: "steps(24)",
+    }
+  );
+});
+
+// Paragraphs start just before heading finishes.
+const headingEnd = introTimeline.duration();
+
+introTimeline.to(
+  copyElements,
+  {
+    autoAlpha: 1,
+    y: 0,
+    duration: 0.55,
+    stagger: 0.08,
+    ease: "power3.out",
+  },
+  headingEnd - 0.5
+);
+
+// Details begin just before the paragraph sequence finishes.
+const detailsStart = headingEnd + 0.2 + 0.05 * (copyElements.length - 1) - 0.1;
+
+if (detailsLine) {
+  introTimeline.fromTo(
+    detailsLine,
+    { scaleY: 0, autoAlpha: 0, transformOrigin: "top" },
+    {
+      scaleY: 1,
+      autoAlpha: 1,
+      duration: 0.65,
+      ease: "power3.out",
+    },
+    detailsStart
+  );
+}
+
+if (detailsHeading) {
+  introTimeline.fromTo(
+    detailsHeading,
+    { y: 15, autoAlpha: 0 },
+    {
+      y: 0,
+      autoAlpha: 1,
+      duration: 0.4,
+      ease: "power3.out",
+    },
+    detailsStart + 0.1
+  );
+}
+
+if (detailElements.length) {
+  introTimeline.fromTo(
+    detailElements,
+    { x: 25, autoAlpha: 0 },
+    {
+      x: 0,
+      autoAlpha: 1,
+      duration: 0.45,
+      stagger: 0.07,
+      ease: "power3.out",
+    },
+    detailsStart + 0.25
+  );
+}
+
+
+    });
+
+    return () => media.revert();
+  },
+  { scope: aboutRef }
+);
+
+
+  return (
+    <section
+      ref={aboutRef}
+      id="about"
+      className="about-section section-padding relative"
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="topline">
+          <p
+            data-about-eyebrow
+            className="section-eyebrow"
+          >
+            A little about me
+          </p>
+
+          <span className="about-index">01 / 06</span>
+        </div>
+
+        <div className="grid lg:grid-cols-[1.3fr_0.7fr] gap-16 lg:gap-24 mt-14">
+          <div>
+            <div className="overflow-hidden">
+            <h2
+  data-about-heading
+  aria-label="Beyond the Code."
+  className="about-heading"
+>
+  <span className="block">
+    <span data-heading-line="first">Beyond the</span>
+  </span>
+
+  <span className="block">
+    <span className="gradient-text" data-heading-line="second">
+      Code.
+    </span>
+  </span>
+</h2>
+            </div>
+
+            <div className="mt-10 max-w-2xl space-y-6">
+              <p
+                data-about-copy
+                className="about-lead"
+              >
+                I'm a developer passionate about creating
+                digital experiences that combine thoughtful
+                engineering with creative design.
+              </p>
+
+              <p
+                data-about-copy
+                className="about-description"
+              >
+                My work spans full-stack web applications,
+                interactive interfaces and game development.
+                I enjoy taking ideas from concept to
+                implementation, building products that are
+                not only functional and scalable but also
+                engaging to experience.
+              </p>
+            </div>
+
+            <a
+              href="#projects"
+              data-about-copy
+              data-cursor="EXPLORE"
+              className="about-link mt-10"
+            >
+              Explore my work
+              <FaArrowUpRightFromSquare />
+            </a>
+          </div>
+
+          <div className="about-details">
+            <div
+              data-about-line
+              className="about-details-line"
+            />
+
+            <div className="about-details-content">
+              <p
+                data-about-details-heading
+                className="section-eyebrow mb-10"
+              >
+                The essentials
+              </p>
+
+              {details.map((detail) => (
+                <div
+                  key={detail.label}
+                  data-about-detail
+                  className="about-detail-row"
+                >
+                  <span>{detail.label}</span>
+                  <p>{detail.value}</p>
+                </div>
+              ))}
+
+              <div
+                data-about-detail
+                className="about-detail-row about-email-row"
+              >
+                <span>Get in touch</span>
+
+                <a
+                  href="mailto:sitopatrick2004@gmail.com"
+                  data-cursor="EMAIL"
+                >
+                  Let's talk
+                  <FaArrowUpRightFromSquare />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

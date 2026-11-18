@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const links = [
 "home",
 "about",
-"skills",
+"services",
 "projects",
 "contact",
 ];

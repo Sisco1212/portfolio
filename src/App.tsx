@@ -1,31 +1,30 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
 
-function App() {
-return ( <div className="relative"> <div className="noise"></div>
+import { Routes, Route } from "react-router";
+import SmoothScroll from "./components/SmoothScroll";
+import CustomCursor from "./components/CustomCursor";
 
-  <Navbar />
+import Home from "./pages/Home";
+import ProjectDetails from "./pages/ProjectDetails";
+import NotFound from "./pages/NotFound";
 
-  <Hero />
+export default function App() {
+  return (
+    <div className="app-shell">
+      <div className="site-atmosphere" aria-hidden="true" />
 
-  <About />
+      <SmoothScroll />
+      <CustomCursor />
 
-  <Skills />
-
-  <Projects />
-
-  <Contact />
-
-  <Footer />
-</div>
-
-
-);
+      <div className="route-layer">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/projects/:slug"
+            element={<ProjectDetails />}
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </div>
+  );
 }
-
-export default App;
