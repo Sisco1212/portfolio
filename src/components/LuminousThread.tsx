@@ -9,51 +9,40 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export default function LuminousThread() {
   const threadRef = useRef<SVGSVGElement>(null);
 
-  useGSAP(
-    () => {
-      const svg = threadRef.current;
-      const paths = svg?.querySelectorAll<SVGPathElement>(".thread-path");
+  // useGSAP(
+  //   () => {
+  //     const svg = threadRef.current;
+  //     const paths = svg?.querySelectorAll<SVGPathElement>(".thread-path");
 
-      if (!svg || !paths?.length) return;
+  //     if (!svg || !paths?.length || !svg.parentElement) return;
 
-      const media = gsap.matchMedia();
+  //     const media = gsap.matchMedia();
 
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        const lengths = Array.from(paths, (path) => path.getTotalLength());
+  //     media.add("(prefers-reduced-motion: no-preference)", () => {
+  //       const length = paths[0].getTotalLength();
 
-        paths.forEach((path, index) => {
-          gsap.set(path, {
-            strokeDasharray: lengths[index],
-            strokeDashoffset: lengths[index] * 0.78,
-          });
-        });
+  //       gsap.set(paths, {
+  //         strokeDasharray: length,
+  //         strokeDashoffset: length,
+  //       });
 
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: ".home-page",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        });
+  //       gsap.to(paths, {
+  //         strokeDashoffset: 0,
+  //         ease: "none",
+  //         scrollTrigger: {
+  //           trigger: svg.parentElement,
+  //           start: "top top",
+  //           end: "bottom bottom",
+  //           scrub: true,
+  //           invalidateOnRefresh: true,
+  //         },
+  //       });
+  //     });
 
-        paths.forEach((path, index) => {
-          timeline.to(
-            path,
-            {
-              strokeDashoffset: 0,
-              ease: "none",
-            },
-            0
-          );
-        });
-      });
-
-      return () => media.revert();
-    },
-    { scope: threadRef }
-  );
+  //     return () => media.revert();
+  //   },
+  //   { scope: threadRef }
+  // );
 
   return (
     <svg

@@ -183,13 +183,17 @@ h6 {
 .luminous-thread {
   position: absolute;
   inset: 0;
-  z-index: 0;
   width: 100%;
   height: 100%;
+  z-index: 0;
+  opacity: 1;
   pointer-events: none;
-  overflow: visible;
-  opacity: 0.58;
 }
+
+/* .luminous-thread .thread-path {
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+} */
 
 
 .thread-glow {
@@ -1360,5 +1364,100 @@ h6 {
   .service-indicator,
   .service-tech-item {
     transition: none;
+  }
+}
+
+
+.featured-projects {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.featured-project {
+  position: sticky;
+  top: 110px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100svh - 110px);
+  background: transparent;
+}
+
+.featured-project-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1.25rem;
+  width: 100%;
+  height: min(78svh, 760px);
+  min-height: 50px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.project-visual,
+.project-info-panel {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 16px;
+}
+
+.project-visual {
+  position: relative;
+  display: block;
+  background: var(--card);
+}
+
+.project-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  will-change: clip-path, transform;
+}
+
+.project-info-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 3vw
+  , 3.5rem);
+  background: #08162B;
+}
+
+@media (max-width: 767px) {
+  .featured-project {
+    position: relative;
+    top: auto;
+    min-height: auto;
+    margin-bottom: 5rem;
+  }
+
+  .featured-project-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    height: auto;
+    min-height: auto;
+  }
+
+  .project-visual {
+    height: 320px;
+    min-height: 320px;
+  }
+
+  .project-info-panel {
+    height: auto;
+    min-height: 320px;
+    padding: 1.5rem;
   }
 }

@@ -26,7 +26,9 @@ export default function SmoothScroll() {
     };
 
     lenis.on("scroll", ScrollTrigger.update);
+
     gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       gsap.ticker.remove(update);
