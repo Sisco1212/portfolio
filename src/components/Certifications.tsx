@@ -8,7 +8,7 @@ import {
   FiArrowUpRight,
   FiDownload,
   FiExternalLink,
-  FiAward,
+  FiX,
 } from "react-icons/fi";
 
 import {
