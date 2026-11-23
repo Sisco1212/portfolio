@@ -209,13 +209,7 @@ const serviceDescriptions = [
   "I configure, deploy, and maintain applications, taking projects from development to reliable production environments.",
 ];
 
-const visualThemes = [
-  "service-visual--frontend",
-  "service-visual--backend",
-  "service-visual--creative",
-  "service-visual--game",
-  "service-visual--deployment",
-];
+
 
 
 export default function Skills() {
