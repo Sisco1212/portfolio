@@ -1,189 +1,520 @@
 
-import { certifications } from "../data/certifications";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
 import {
+  FiArrowDown,
   FiArrowUpRight,
   FiDownload,
   FiExternalLink,
   FiAward,
+  FiX,
 } from "react-icons/fi";
 
+import {
+  certifications,
+  type Certification,
+} from "../data/certifications";
+
+import "../Certifications.css";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 export default function Certifications() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const [activeCertificate, setActiveCertificate] =
+    useState<Certification | null>(null);
+
+  // =========================================
+  // SCROLL ANIMATIONS
+  // =========================================
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      if (!section) return;
+      if (
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  return;
+}
+
+      const heading = section.querySelector(".archive-heading");
+      const headingLines = section.querySelectorAll(".archive-heading-line");
+      const intro = section.querySelector(".archive-intro");
+      const entries = gsap.utils.toArray<HTMLElement>(
+        ".credential-entry"
+      );
+
+      // Section heading
+      const headingTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: heading,
+          start: "top 82%",
+          // toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      headingTimeline
+        .fromTo(
+          headingLines,
+          {
+            yPercent: 110,
+            rotate: 3,
+          },
+          {
+            yPercent: 0,
+            rotate: 0,
+            duration: 1.1,
+            stagger: 0.12,
+            ease: "power4.out",
+          }
+        )
+        .fromTo(
+          intro,
+          {
+            y: 25,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          "-=0.65"
+        );
+
+      // Individual credential exhibitions
+      entries.forEach((entry) => {
+        const artwork = entry.querySelector(
+          ".credential-artwork"
+        );
+
+        const image = entry.querySelector(
+          ".credential-artwork img"
+        );
+
+        const details = entry.querySelectorAll(
+          ".credential-detail-reveal"
+        );
+
+        const direction = entry.dataset.direction;
+
+        const imageStart =
+          direction === "right"
+            ? "inset(0 0 0 100%)"
+            : "inset(0 100% 0 0)";
+
+        const imageTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: entry,
+            start: "top 78%",
+            // toggleActions: "play none none none",
+            once: true,
+          },
+        });
+
+        imageTimeline
+          .fromTo(
+            entry,
+            {
+              y: 70,
+              opacity: 0,
+            },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.9,
+              ease: "power3.out",
+            }
+          )
+          .fromTo(
+            artwork,
+            {
+              clipPath: imageStart,
+            },
+            {
+              clipPath: "inset(0 0% 0 0%)",
+              duration: 1.2,
+              ease: "power4.inOut",
+            },
+            "-=0.55"
+          )
+          .fromTo(
+            image,
+            {
+              scale: 1.12,
+            },
+            {
+              scale: 1,
+              duration: 1.4,
+              ease: "power3.out",
+            },
+            "<"
+          )
+          .fromTo(
+            details,
+            {
+              y: 28,
+              opacity: 0,
+            },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              stagger: 0.09,
+              ease: "power3.out",
+            },
+            "-=0.85"
+          );
+
+        // Subtle image parallax while the exhibition is visible
+        gsap.fromTo(
+          image,
+          {
+            yPercent: -3,
+          },
+          {
+            yPercent: 3,
+            ease: "none",
+            scrollTrigger: {
+              trigger: entry,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+              once: true,
+            },
+          }
+        );
+      });
+    },
+    { scope: sectionRef }
+  );
+
+  // =========================================
+  // MODAL BEHAVIOUR
+  // =========================================
+
+  useEffect(() => {
+    if (!activeCertificate) return;
+
+    const previousOverflow = document.body.style.overflow;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActiveCertificate(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeCertificate]);
+
   return (
-    <section id="certifications" className="section-padding">
-      <div className="max-w-6xl mx-auto">
+    <>
+      <section
+        id="certifications"
+        ref={sectionRef}
+        className="credential-archive section-padding"
+      >
+        <div className="archive-container">
 
-        {/* Section heading */}
-        <div className="mb-16">
-          <p className="uppercase text-blue-400 tracking-[5px] text-sm mb-6">
-            Credentials & Achievements
-          </p>
+          {/* =================================
+              SECTION INTRODUCTION
+          ================================= */}
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <h2 className="uppercase text-4xl md:text-5xl font-bold">
-                Certifications
-              </h2>
+          <div className="topline archive-topline">
+            <p className="section-eyebrow">
+              Selected credentials
+            </p>
 
-              <p className="text-white/50 mt-5 max-w-xl leading-relaxed">
-                Professional certifications and continuous learning
-                milestones that reflect my technical growth and commitment
-                to development.
-              </p>
+            <span className="about-index">04 / 05</span>
+          </div>
+
+          <div className="archive-heading">
+            <div className="archive-heading-main">
+              <div className="archive-heading-mask">
+                <h2 className="archive-heading-line">
+                  THE RECORD
+                </h2>
+              </div>
+
+              <div className="archive-heading-mask">
+                <h2 className="archive-heading-line archive-heading-second">
+                  OF <span>PROGRESS.</span>
+                </h2>
+              </div>
             </div>
 
-            <div className="flex items-center gap-3 text-white/50">
-              <FiAward className="text-blue-400 text-xl" />
-              <span className="text-sm">
-                {certifications.length} Credentials
-              </span>
+            <div className="archive-intro">
+              {/* <span className="archive-intro-mark">
+                <FiAward />
+              </span> */}
+
+              <p>
+                A collection of milestones, skills, and
+                knowledge acquired along the way.
+              </p>
+
+              {/* <div className="archive-total">
+                <strong>
+                  {String(certifications.length).padStart(2, "0")}
+                </strong>
+                <span>DOCUMENTED CREDENTIALS</span>
+              </div> */}
             </div>
           </div>
-        </div>
 
-        {/* Certificate cards */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {certifications.map((certificate) => (
-            <article
-              key={certificate.id}
-              className="group glass border border-white/10 rounded-3xl overflow-hidden hover:border-blue-400/40 transition duration-500"
-            >
-              {/* Certificate image */}
-              <div className="relative overflow-hidden bg-white/5 aspect-[1.4/1]">
-                <img
-                  src={certificate.image}
-                  alt={`${certificate.title} certificate`}
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                />
+          {/* =================================
+              CREDENTIAL EXHIBITION
+          ================================= */}
 
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
-                  <a
-                    href={certificate.pdf}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-white text-black px-5 py-3 rounded-full text-sm font-medium hover:bg-blue-400 transition"
+          {certifications.length > 0 ? (
+            <div className="archive-exhibitions">
+
+              <div className="archive-spine" aria-hidden="true">
+                <div className="archive-spine-fill" />
+              </div>
+
+              {certifications.map((certificate, index) => {
+                const isReversed = index % 2 !== 0;
+
+                return (
+                  <article
+                    key={certificate.id}
+                    className={`credential-entry ${
+                      isReversed ? "credential-entry-reversed" : ""
+                    }`}
+                    data-direction={isReversed ? "right" : "left"}
                   >
-                    View Certificate
-                    <FiArrowUpRight />
-                  </a>
-                </div>
-              </div>
+                    {/* ARTWORK */}
 
-              {/* Certificate details */}
-              <div className="p-6">
+                    <div className="credential-artwork-column">
+                      <div className="credential-artwork-frame">
 
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-blue-400 text-xs uppercase tracking-wider">
-                      {certificate.issuer}
-                    </p>
+                        {/* <div className="credential-artwork-top">
+                          <span>
+                            DOCUMENT / {String(index + 1).padStart(2, "0")}
+                          </span>
 
-                    <h3 className="text-xl font-semibold mt-2 leading-snug">
-                      {certificate.title}
-                    </h3>
-                  </div>
+                          <span>VERIFIED LEARNING</span>
+                        </div> */}
 
-                  <FiAward className="text-blue-400 text-2xl shrink-0" />
-                </div>
+                        <div className="credential-artwork">
+                          <img
+                            src={certificate.image}
+                            alt={`${certificate.title} certificate`}
+                            loading="lazy"
+                          />
 
-                <p className="text-white/50 text-sm leading-relaxed mt-4">
-                  {certificate.description}
-                </p>
+                          <div className="credential-artwork-overlay">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActiveCertificate(certificate)
+                              }
+                              aria-label={`View ${certificate.title}`}
+                              className="credential-artwork-button"
+                            >
+                              <span>INSPECT DOCUMENT</span>
+                              <FiArrowUpRight />
+                            </button>
+                          </div>
+                        </div>
 
-                {/* Issue date */}
-                {certificate.issueDate && (
-                  <div className="mt-6 pt-5 border-t border-white/10">
-                    <p className="text-white/40 text-xs uppercase tracking-wider">
-                      Date Issued
-                    </p>
+                        {/* <div className="credential-artwork-bottom">
+                          <span>ARCHIVE SERIES</span>
+                          <span>
+                            CR — {String(index + 1).padStart(3, "0")}
+                          </span>
+                        </div> */}
 
-                    <p className="text-white/80 text-sm mt-2">
-                      {certificate.issueDate}
-                    </p>
-                  </div>
-                )}
+                      </div>
 
-                {/* Skills */}
-                {certificate.skills.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {certificate.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-2 rounded-full bg-white/[0.05] border border-white/10 text-white/60 text-xs"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                      {/* <div className="credential-artwork-caption">
+                        <span>FIG. {String(index + 1).padStart(2, "0")}</span>
+                        <span>{certificate.issuer}</span>
+                      </div> */}
+                    </div>
 
-                {/* Credential ID */}
-                {certificate.credentialId && (
-                  <div className="mt-5">
-                    <p className="text-white/40 text-xs uppercase tracking-wider">
-                      Credential ID
-                    </p>
+                    {/* INFORMATION */}
 
-                    <p className="text-white/70 text-xs mt-2 break-all">
-                      {certificate.credentialId}
-                    </p>
-                  </div>
-                )}
+                    <div className="credential-content">
 
-                {/* Actions */}
-                <div className="flex flex-wrap items-center gap-3 mt-7 pt-5 border-t border-white/10">
+                      {/* <div className="credential-content-top credential-detail-reveal">
+                        <span className="credential-serial">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                  {certificate.pdf && (
-                    <>
-                      <a
-                        href={certificate.pdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 flex items-center justify-center gap-2 bg-white text-black rounded-full px-4 py-3 text-sm font-medium hover:bg-blue-400 transition"
-                      >
-                        View
-                        <FiArrowUpRight />
-                      </a>
+                        <span className="credential-category">
+                          PROFESSIONAL DEVELOPMENT
+                        </span>
+                      </div> */}
 
-                      <a
-                        href={certificate.pdf}
-                        download
-                        className="w-12 h-12 flex items-center justify-center rounded-full border border-white/15 text-white/70 hover:bg-white/10 hover:text-white transition"
-                        aria-label={`Download ${certificate.title}`}
-                        title="Download certificate"
-                      >
-                        <FiDownload />
-                      </a>
-                    </>
-                  )}
+                      <div className="credential-content-main">
 
-                  {certificate.verificationUrl && (
-                    <a
-                      href={certificate.verificationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-12 h-12 flex items-center justify-center rounded-full border border-white/15 text-white/70 hover:bg-white/10 hover:text-white transition"
-                      aria-label={`Verify ${certificate.title}`}
-                      title="Verify credential"
-                    >
-                      <FiExternalLink />
-                    </a>
-                  )}
-                </div>
+                        <p className="credential-issuer credential-detail-reveal">
+                          {certificate.issuer}
+                        </p>
 
-              </div>
-            </article>
-          ))}
+                        <h3 className="credential-title credential-detail-reveal">
+                          {certificate.title}
+                        </h3>
+
+                        {certificate.issueDate && (
+                          <p className="credential-date credential-detail-reveal">
+                            <span>ISSUED</span>
+                            {certificate.issueDate}
+                          </p>
+                        )}
+
+                        {certificate.skills.length > 0 && (
+                          <div className="credential-skill-area credential-detail-reveal">
+                            {/* <span className="credential-skill-label">
+                              KNOWLEDGE AREAS
+                            </span> */}
+
+                            <div className="credential-skills">
+                              {certificate.skills.map((skill) => (
+                                <span key={skill}>{skill}</span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                      </div>
+
+                      {/* ACTIONS */}
+
+                      <div className="credential-actions credential-detail-reveal">
+
+                        {certificate.pdf && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActiveCertificate(certificate)
+                              }
+                              className="credential-primary-action"
+                            >
+                              View document
+                              <FiArrowUpRight />
+                            </button>
+
+                            <a
+                              href={certificate.pdf}
+                              download
+                              className="credential-secondary-action"
+                            >
+                              <FiDownload />
+                              Download
+                            </a>
+                          </>
+                        )}
+
+                        {certificate.verificationUrl && (
+                          <a
+                            href={certificate.verificationUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="credential-secondary-action"
+                          >
+                            Verify
+                            <FiExternalLink />
+                          </a>
+                        )}
+
+                      </div>
+
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="archive-empty">
+              No credentials have been added yet.
+            </div>
+          )}
+
         </div>
+      </section>
 
-        {/* Empty state */}
-        {certifications.length === 0 && (
-          <p className="text-white/40 text-center py-16">
-            Certifications will be displayed here.
-          </p>
-        )}
+      {/* =====================================
+          CERTIFICATE VIEWER
+      ===================================== */}
 
-      </div>
-    </section>
+      {activeCertificate && (
+        <div
+          className="credential-modal-backdrop"
+          onClick={() => setActiveCertificate(null)}
+          role="presentation"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${activeCertificate.title} certificate`}
+            className="credential-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="credential-modal-header">
+
+              <div className="credential-modal-title">
+                <p>{activeCertificate.issuer}</p>
+                <h3>{activeCertificate.title}</h3>
+              </div>
+
+              <div className="credential-modal-controls">
+
+                {activeCertificate.pdf && (
+                  <a
+                    href={activeCertificate.pdf}
+                    download
+                    aria-label="Download certificate"
+                    title="Download certificate"
+                  >
+                    <FiDownload />
+                  </a>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setActiveCertificate(null)}
+                  aria-label="Close certificate preview"
+                >
+                  <FiX />
+                </button>
+
+              </div>
+            </div>
+
+            <div className="credential-pdf-viewer">
+              {activeCertificate.pdf ? (
+                <iframe
+                  key={activeCertificate.pdf}
+                  src={`${activeCertificate.pdf}#toolbar=1&navpanes=0`}
+                  title={`${activeCertificate.title} PDF`}
+                />
+              ) : (
+                <div className="credential-no-pdf">
+                  No PDF is available for this certificate.
+                </div>
+              )}
+            </div>
+
+          </div>
+        </div>
+      )}
+    </>
   );
 }

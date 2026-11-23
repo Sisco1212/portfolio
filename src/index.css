@@ -365,44 +365,6 @@ h6 {
   transform: rotate(35deg);
 }
 
-/* Hero buttons */
-
-.hero-primary-button,
-.hero-secondary-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 30px;
-  transition:
-    transform 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.hero-primary-button {
-  color: white;
-  background: #2563eb;
-  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.18);
-}
-
-.hero-primary-button:hover {
-  transform: translateY(-4px);
-  background: #3478f6;
-  box-shadow: 0 12px 35px rgba(37, 99, 235, 0.3);
-}
-
-.hero-secondary-button {
-  color: white;
-  border: 1px solid rgba(96, 165, 250, 0.5);
-}
-
-.hero-secondary-button:hover {
-  transform: translateY(-4px);
-  background: rgba(37, 99, 235, 0.12);
-  border-color: rgba(96, 165, 250, 0.9);
-}
 
 .hero-social-link {
   display: flex;
@@ -476,10 +438,10 @@ h6 {
 }
 
 .about-heading {
-  font-size: clamp(3.5rem, 7vw, 7rem);
+  font-size: clamp(3.5rem, 7.5vw, 7rem);
   font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.055em;
+ letter-spacing: -0.085em;
+  line-height: 0.83;
   text-transform: uppercase;
 }
 
@@ -666,7 +628,7 @@ h6 {
   width: 88px;
   height: 88px;
   border-color: rgba(96, 165, 250, 0.85);
-  background: rgba(37, 99, 235, 0.12);
+  background: #2563EB;
 }
 
 .cursor-dot {
@@ -1042,7 +1004,7 @@ h6 {
   font-weight: 600;
   line-height: 0.85;
   letter-spacing: -0.12em;
-
+ opacity: 0;
   color: transparent;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1.2px rgba(148, 177, 240, 0.48);
@@ -1050,7 +1012,7 @@ h6 {
   text-shadow:
     0 0 35px rgba(105, 143, 220, 0.12);
 
-  animation: service-number-enter 0.5s ease both;
+  /* animation: service-number-enter 0.5s ease both; */
 }
 
 @keyframes service-number-enter {
@@ -1460,4 +1422,27 @@ h6 {
     min-height: 320px;
     padding: 1.5rem;
   }
+}
+
+
+
+/* =========================================
+   PROJECTS CLOSING REVEAL LINE
+========================================= */
+
+.projects-closing {
+  position: relative;
+  border-top: 0 !important;
+}
+
+.projects-closing::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 7%;
+  width: 86%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scaleX(var(--closing-reveal, 1));
+  transform-origin: left center;
 }

@@ -1,5 +1,5 @@
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 
 import { gsap } from "gsap";
@@ -292,14 +292,163 @@ function ServiceVisual({ index }: { index: number }) {
   );
 }
 
+
 export default function Skills() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [openIndex, setOpenIndex] = useState(0);
 
+  const previousOpenIndex = useRef(openIndex);
+
+useEffect(() => {
+  if (previousOpenIndex.current === openIndex) return;
+
+  previousOpenIndex.current = openIndex;
+
+  const number = sectionRef.current?.querySelector(
+    ".services-current-number"
+  );
+
+  if (!number) return;
+
+  gsap.fromTo(
+    number,
+    {
+      y: 12,
+      opacity: 0.7,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.45,
+      ease: "power2.out",
+      overwrite: true,
+    }
+  );
+}, [openIndex]);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // =========================================
+        // HEADING REVEAL
+        // =========================================
+
+        // Prepare the two heading lines for their reveal.
+        gsap.set(".services-title > span", {
+          display: "inline-block",
+          overflow: "hidden",
+          verticalAlign: "bottom",
+        });
+
+        gsap.set(".services-title > span > span", {
+          display: "inline-block",
+        });
+
+        const headingTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".services-heading",
+            start: "top 72%",
+            once: true,
+          },
+        });
+
+        headingTimeline
+          .from(".services-heading .topline", {
+            y: 22,
+            opacity: 0,
+            duration: 0.75,
+            ease: "power3.out",
+          })
+          .from(
+            ".services-title > span > span",
+            {
+              yPercent: 110,
+              opacity: 0,
+              duration: 1.05,
+              stagger: 0.16,
+              ease: "power4.out",
+            },
+            "-=0.2"
+          );
+
+        // =========================================
+        // SERVICES LAYOUT REVEAL
+        // =========================================
+
+        const layoutTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".services-layout",
+            start: "top 72%",
+            once: true,
+          },
+        });
+
+        // Large changing number rises into view.
+layoutTimeline.to(
+  ".services-current-number",
+  {
+    opacity: 1,
+    duration: 0.9,
+    ease: "power2.out",
+  },
+  0.15
+);
+        // Horizontal index rule draws across.
+        layoutTimeline.from(
+          ".services-index-rule",
+          {
+            scaleX: 0,
+            transformOrigin: "left center",
+            duration: 0.9,
+            ease: "power3.inOut",
+          },
+          0.3
+        );
+
+        // Service titles enter from the right.
+        layoutTimeline.from(
+          ".service-item",
+          {
+            x: 55,
+            opacity: 0,
+            duration: 0.9,
+            stagger: 0.13,
+            ease: "power3.out",
+          },
+          0.15
+        );
+
+        // The initially expanded service content follows.
+        // Its height remains controlled by the existing CSS accordion.
+        layoutTimeline.from(
+          ".service-item.is-active .service-details-inner > *",
+          {
+            y: 24,
+            opacity: 0,
+            duration: 0.75,
+            stagger: 0.12,
+            ease: "power3.out",
+          },
+          "-=0.35"
+        );
+      });
+
+
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section
-      id="services"
-      className="services-section section-padding"
-    >
+
+<section
+  ref={sectionRef}
+  id="services"
+  className="services-section section-padding"
+>
       <div className="services-container">
         {/* Heading — same visual language as About */}
         <div className="services-heading">
@@ -308,18 +457,18 @@ export default function Skills() {
               What I bring to the table
             </p>
 
-            <span className="about-index">02 / 06</span>
+            <span className="about-index">02 / 05</span>
           </div>
 
           <div className="overflow-hidden">
-            <h2 className="about-heading services-title">
+            <h2 className="about-heading services-title tracking-tighter">
               <span className="">
-                <span>What I </span>
-              </span>
+                <span>What I </span> 
+              </span> 
 
-              <span className="">
-                <span className="gradient-text">
-                   Build.
+              <span className="pl-4">
+                 <span className="gradient-text">
+                    Build.
                 </span>
               </span>
             </h2>
@@ -333,7 +482,7 @@ export default function Skills() {
             <div className="services-index-sticky">
               <div
                 className="services-current-number"
-                key={openIndex}
+                // key={openIndex}
               >
                 {String(openIndex + 1).padStart(2, "0")}
               </div>

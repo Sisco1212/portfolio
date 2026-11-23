@@ -181,7 +181,7 @@ if (detailElements.length) {
             A little about me
           </p>
 
-          <span className="about-index">01 / 06</span>
+          <span className="about-index">01 / 05</span>
         </div>
 
         <div className="grid lg:grid-cols-[1.3fr_0.7fr] gap-16 lg:gap-24 mt-14">
@@ -190,7 +190,7 @@ if (detailElements.length) {
             <h2
   data-about-heading
   aria-label="Beyond the Code."
-  className="about-heading"
+  className="about-heading tracking-tighter"
 >
   <span className="block">
     <span data-heading-line="first">Beyond the</span>

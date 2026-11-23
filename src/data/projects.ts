@@ -11,6 +11,7 @@ export type Project = {
   screenshots: string[];
   github: string;
   demo: string;
+  client: string;
 };
 
 export const projects: Project[] = [
@@ -21,7 +22,7 @@ export const projects: Project[] = [
     description:
       "A subscription management platform for tracking recurring expenses, monitoring renewals, and managing payments with automated reminders and real-time insights.",
     category: "Full Stack Development",
-    image: "/subverse.jpg",
+    image: "/subversee.jpg",
     tech: ["Next.js", "TypeScript", "Express.js", "Node.js", "MongoDB"],
     role: "Full Stack Development",
     features: [
@@ -34,8 +35,9 @@ export const projects: Project[] = [
     screenshots: [
       // Add paths such as "/screenshots/subverse-dashboard.png"
     ],
-    github: "",
-    demo: "",
+    github: "github.com/sisco1212/subverse-frontend",
+    demo: "subversee.vercel.app",
+    client: "",
   },
   {
     id: 2,
@@ -54,8 +56,9 @@ export const projects: Project[] = [
       "Responsive user interface",
     ],
     screenshots: [],
-    github: "",
+    github: "github.com/animatrix-x/animatrix-frontend",
     demo: "https://www.animatrix.org/",
+    client: "Animatrix",
   },
   {
     id: 3,
@@ -74,8 +77,9 @@ export const projects: Project[] = [
       "Animated interface interactions",
     ],
     screenshots: [],
-    github: "",
+    github: "github.com/sisco1212/barbershop",
     demo: "https://barbershop-sisco.vercel.app/",
+    client: "",
   },
   {
     id: 4,
@@ -94,8 +98,9 @@ export const projects: Project[] = [
       "Responsive layout",
     ],
     screenshots: [],
-    github: "",
+    github: "github.com/sisco1212/defi-foundry-frontend",
     demo: "https://defifoundry.xyz/",
+    client: "Defi Foundry",
   },
   {
     id: 5,
@@ -114,8 +119,9 @@ export const projects: Project[] = [
       "Secure payment experience",
     ],
     screenshots: [],
-    github: "",
+    github: "github.com/agrovest-app/agrovest-frontend",
     demo: "https://www.agro-vest.com/",
+    client: "Agrovest",
   },
   {
     id: 6,
@@ -134,8 +140,9 @@ export const projects: Project[] = [
       "Unlockable weapons",
     ],
     screenshots: [],
-    github: "",
+    github: "https://github.com/Sisco1212/Mentorship-project-by-clan-3",
     demo: "https://siscox.itch.io/the-fall",
+    client: "",
   },
   {
     id: 7,
@@ -154,8 +161,9 @@ export const projects: Project[] = [
       "Review of correct and incorrect answers",
     ],
     screenshots: [],
-    github: "",
+    github: "https://github.com/Sisco1212/quizyn",
     demo: "https://quizyn.vercel.app/",
+    client: "",
   },
   {
     id: 8,
@@ -174,7 +182,8 @@ export const projects: Project[] = [
       "Dynamic weather information",
     ],
     screenshots: [],
-    github: "",
+    github: "https://github.com/Sisco1212/weatherly",
     demo: "https://weatherly-sisco.vercel.app/",
+    client: "",
   },
 ];

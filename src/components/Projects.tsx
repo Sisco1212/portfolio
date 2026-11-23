@@ -16,6 +16,8 @@ const featuredSlugs = [
   "animatrix",
   "barbershop",
   "agrovest",
+  "the-fall",
+  "quizyn",
 ];
 
 export default function Projects() {
@@ -34,103 +36,234 @@ export default function Projects() {
       const section = sectionRef.current;
       if (!section) return;
 
-      // Section introduction
-      gsap.from(".projects-intro > *", {
-        y: 35,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".projects-intro",
-          start: "top 80%",
-          once: true,
-        },
-      });
+      // Respect reduced-motion preferences
+      const mm = gsap.matchMedia();
 
-      const featured = gsap.utils.toArray<HTMLElement>(
-        ".featured-project",
-        section
-      );
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+       // =========================================
+// SECTION INTRODUCTION
+// =========================================
 
-      // Project image and content reveals
-      featured.forEach((project) => {
-        const image = project.querySelector(".project-image");
-        const content = project.querySelector(".project-content");
+const introTimeline = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".projects-intro",
+    start: "top 72%",
+    once: true,
+  },
+});
 
-        if (image) {
-          gsap.fromTo(
-            image,
-            {
-              clipPath: "inset(10% 0 10% 0)",
-              scale: 1.06,
-            },
-            {
-              clipPath: "inset(0% 0 0% 0)",
-              scale: 1,
-              duration: 1.2,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: project,
-                start: "top 75%",
-                once: true,
-              },
-            }
-          );
-        }
+introTimeline
+  .from(".projects-intro .topline", {
+    y: 20,
+    opacity: 0,
+    duration: 0.7,
+    ease: "power3.out",
+  })
+  .from(
+    ".projects-intro h2",
+    {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+    },
+    "-=0.2"
+  )
+  .from(
+    ".projects-intro > div:last-child > p",
+    {
+      y: 25,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    },
+    "-=0.65"
+  );
 
-        if (content) {
-          gsap.from(content, {
-            y: 35,
-            opacity: 0,
-            duration: 0.9,
-            ease: "power3.out",
+        const featured = gsap.utils.toArray<HTMLElement>(
+          ".featured-project",
+          section
+        );
+
+        // =========================================
+        // FEATURED PROJECT REVEALS
+        // =========================================
+
+        featured.forEach((project) => {
+          const image = project.querySelector(".project-image");
+          const content = project.querySelector(".project-content");
+
+          const timeline = gsap.timeline({
             scrollTrigger: {
               trigger: project,
-              start: "top 75%",
+              start: "top 68%",
               once: true,
             },
           });
-        }
-      });
 
-      // Press the previous card down as the next project arrives
-      featured.forEach((project, index) => {
-  const nextProject = featured[index + 1];
-  const card = project.querySelector<HTMLElement>(
-    ".featured-project-card"
-  );
+          if (image) {
+            timeline.fromTo(
+              image,
+              {
+                clipPath: "inset(12% 0 12% 0)",
+                scale: 1.08,
+              },
+              {
+                clipPath: "inset(0% 0 0% 0)",
+                scale: 1,
+                duration: 1.4,
+                ease: "power3.out",
+              },
+              0
+            );
+          }
 
-  if (!nextProject || !card) return;
+          if (content) {
+            timeline.from(
+              content,
+              {
+                y: 48,
+                opacity: 0,
+                duration: 1.05,
+                ease: "power3.out",
+              },
+              0.2
+            );
+          }
+        });
 
-  gsap.to(card, {
-    scale: 0.94,
-    y: 8,
-    opacity: 0,
-    ease: "none",
-    scrollTrigger: {
-      trigger: nextProject,
-      start: "top bottom",
-      end: "top top+=110",
-      scrub: 0.6,
-      invalidateOnRefresh: true,
-    },
-  });
+        // =========================================
+        // PINNED PROJECT STACKING
+        // =========================================
+
+        featured.forEach((project, index) => {
+          const nextProject = featured[index + 1];
+
+          const card = project.querySelector<HTMLElement>(
+            ".featured-project-card"
+          );
+
+          if (!nextProject || !card) return;
+
+          gsap.to(card, {
+            scale: 0.94,
+            y: 8,
+            opacity: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: nextProject,
+              start: "top bottom",
+              end: "top top+=110",
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+            },
+          });
+        });
+
+       // =========================================
+// MORE PROJECTS REVEAL
+// =========================================
+
+const moreTimeline = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".more-projects",
+    start: "top 72%",
+    once: true,
+  },
 });
 
-      // More projects reveal
-      gsap.from(".more-project", {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".more-projects-grid",
-          start: "top 82%",
-          once: true,
-        },
+moreTimeline
+  .from(
+    ".more-projects > div:first-child > div > div",
+    {
+      y: 20,
+      opacity: 0,
+      duration: 0.7,
+      ease: "power3.out",
+    }
+  )
+  .from(
+    ".more-projects > div:first-child h3",
+    {
+      y: 45,
+      opacity: 0,
+      duration: 0.95,
+      ease: "power3.out",
+    },
+    "-=0.35"
+  )
+  .from(
+    ".more-projects > div:first-child > p",
+    {
+      y: 25,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    },
+    "-=0.55"
+  )
+  .from(
+    ".more-project",
+    {
+      y: 42,
+      opacity: 0,
+      duration: 0.85,
+      stagger: 0.14,
+      ease: "power3.out",
+    },
+    "-=0.2"
+  );
       });
+
+
+// =========================================
+// PROJECTS CLOSING REVEAL
+// =========================================
+
+const closingTimeline = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".projects-closing",
+    start: "top 78%",
+    once: true,
+  },
+});
+
+// Prepare the top border for its reveal.
+closingTimeline.from(
+  ".projects-closing",
+  {
+    "--closing-reveal": 0,
+    duration: 0.9,
+    ease: "power2.out",
+  },
+  0
+);
+
+// Statement enters first.
+closingTimeline.from(
+  ".projects-closing > p",
+  {
+    y: 45,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out",
+  },
+  0.15
+);
+
+// CTA follows with a horizontal entrance.
+closingTimeline.from(
+  ".projects-closing > a",
+  {
+    x: 35,
+    opacity: 0,
+    duration: 0.9,
+    ease: "power3.out",
+  },
+  0.4
+);
+
+
     },
     { scope: sectionRef }
   );
@@ -143,14 +276,14 @@ export default function Projects() {
     >
       <div className="w-full mx-auto">
         {/* INTRO */}
-        <div className=" px-20 projects-intro relative pb-14 md:pb-10">
+        <div className="section-padding projects-intro relative pb-14 md:pb-10">
           <div className="topline">
             <p className="section-eyebrow">Selected works</p>
-            <span className="about-index">03 / 06</span>
+            <span className="about-index">03 / 05</span>
           </div>
 
           <div className="mt-10">
-            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase leading-[0.95] tracking-tight">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase leading-[0.95] tracking-tighter">
               Ideas into
               <br />
               <span className="gradient-text">experiences.</span>
@@ -161,89 +294,75 @@ export default function Projects() {
               experiences shaped by curiosity, design and code.
             </p>
           </div>
-
         </div>
 
         {/* FEATURED PROJECTS */}
-        
-{/* FEATURED PROJECTS */}
-<div className="featured-projects mt-16 md:mt-5 px-8">
-  {featuredProjects.map((project, index) => (
-    <article
-      key={project.id}
-      className="featured-project"
-      style={{ zIndex: index + 1 }}
-    >
-      <div className="featured-project-card">
-        {/* PROJECT IMAGE */}
-        <Link
-          to={`/projects/${project.slug}`}
-          data-cursor="VIEW"
-          aria-label={`View ${project.title} project`}
-          className="project-visual group relative block"
-        >
-          <img
-            src={project.image}
-            alt={`${project.title} project preview`}
-            loading="lazy"
-            className="project-image"
-          />
+        <div className="featured-projects mt-16 md:mt-5 px-8">
+          {featuredProjects.map((project, index) => (
+            <article
+              key={project.id}
+              className="featured-project"
+              style={{ zIndex: index + 1 }}
+            >
+              <div className="featured-project-card">
+                {/* PROJECT IMAGE */}
+                <Link
+                  to={`/projects/${project.slug}`}
+                  data-cursor="VIEW"
+                  aria-label={`View ${project.title} project`}
+                  className="project-visual group relative block"
+                >
+                  <img
+                    src={project.image}
+                    alt={`${project.title} project preview`}
+                    loading="lazy"
+                    className="project-image"
+                  />
 
-          <div className="project-image-shade absolute inset-0 transition-opacity duration-500 group-hover:opacity-40" />
+                  <div className="project-image-shade absolute inset-0 transition-opacity duration-500 group-hover:opacity-40" />
 
-          <div className="absolute bottom-5 right-5 md:bottom-7 md:right-7 w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/50 bg-black/20 backdrop-blur-sm text-white flex items-center justify-center text-xl transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:rotate-45">
-            <FiArrowUpRight />
-          </div>
-        </Link>
+                  <div className="absolute bottom-5 right-5 md:bottom-7 md:right-7 w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/50 bg-black/20 backdrop-blur-sm text-white flex items-center justify-center text-xl transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:rotate-45">
+                    <FiArrowUpRight />
+                  </div>
+                </Link>
 
-        {/* PROJECT DESCRIPTION */}
-        <div className="project-content project-info-panel">
-          <p className="text-blue-400 uppercase tracking-[3px] text-xs">
-            {project.category}
-          </p>
+                {/* PROJECT DESCRIPTION */}
+                <div className="project-content project-info-panel">
+                  <p className="text-blue-400 uppercase tracking-[3px] text-xs">
+                    {project.category}
+                  </p>
 
-          <Link
-            to={`/projects/${project.slug}`}
-            className="project-title-link inline-block mt-4"
-          >
-            <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-[0.95]">
-              {project.title}
-            </h3>
-          </Link>
+                  <Link
+                    to={`/projects/${project.slug}`}
+                    className="project-title-link inline-block mt-4"
+                  >
+                    <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-[0.95]">
+                      {project.title}
+                    </h3>
+                  </Link>
 
-          <p className="text-gray-400 mt-6 leading-relaxed text-sm">
-            {project.description}
-          </p>
+                  <p className="text-gray-400 mt-6 leading-relaxed text-sm">
+                    {project.description}
+                  </p>
 
-          <div className="flex flex-wrap gap-x-4 gap-y-2 mt-7">
-            {project.tech.map((item) => (
-              <span
-                key={item}
-                className="text-xs text-blue-400 uppercase tracking-wider text-gray-500"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-
-          {/* <Link
-            to={`/projects/${project.slug}`}
-            className="project-explore inline-flex items-center gap-3 mt-9 text-sm uppercase tracking-[2px] text-white self-start"
-          >
-            Explore project
-            <span className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center transition-all duration-300">
-              <FiArrowUpRight />
-            </span>
-          </Link> */}
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 mt-7">
+                    {project.tech.map((item) => (
+                      <span
+                        key={item}
+                        className="text-xs text-blue-400 uppercase tracking-wider text-gray-500"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
-      </div>
-    </article>
-  ))}
-</div>
-
 
         {/* MORE PROJECTS */}
-        <div className="more-projects mt-24 md:mt-36">
+        <div className="more-projects mt-14 md:mt-10 section-padding">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-white/10">
             <div>
               <div className="flex items-center gap-4 mb-6">
@@ -290,7 +409,7 @@ export default function Projects() {
         </div>
 
         {/* CLOSING */}
-        <div className="projects-closing mt-24 md:mt-36 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between gap-8">
+        <div className="section-padding projects-closing mt-14 md:mt-10 pt-5 border-t border-white/10 flex flex-col md:flex-row justify-between gap-8">
           <p className="text-gray-400 text-lg md:text-xl max-w-xl leading-relaxed">
             There's always more to explore. Have something in mind?
             <span className="text-white"> Let's build it.</span>

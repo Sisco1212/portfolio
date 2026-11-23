@@ -1,0 +1,327 @@
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.site-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  background: rgba(3, 6, 17, 0.78);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.navbar-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1600px;
+  height: 88px;
+  padding: 0 7%;
+  margin: 0 auto;
+}
+
+/* =========================================
+   BRAND
+========================================= */
+
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  color: #f8fafc;
+  font-family: "Jost", sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.075em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.navbar-brand span {
+  color: #438bff;
+}
+
+/* =========================================
+   DESKTOP LINKS
+========================================= */
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.2vw, 36px);
+}
+
+.navbar-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 88px;
+  color: rgba(248, 250, 252, 0.55);
+  font-family: "Jost", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover,
+.navbar-link.active {
+  color: #f8fafc;
+}
+
+.navbar-link-indicator {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #438bff;
+  box-shadow: 0 0 12px rgba(67, 139, 255, 0.55);
+}
+
+/* =========================================
+   CONTACT CTA
+========================================= */
+
+.navbar-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 13px 18px;
+  color: #fff;
+  background: #2563eb;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: "Jost", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 5px;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.navbar-cta svg {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-cta:hover {
+  background: #3478ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+}
+
+.navbar-cta:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* =========================================
+   MOBILE MENU BUTTON
+========================================= */
+
+.navbar-menu-button {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  cursor: pointer;
+}
+
+.navbar-menu-button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+.mobile-navigation {
+  display: none;
+  overflow: hidden;
+  background: rgba(3, 6, 17, 0.98);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mobile-navigation-inner {
+  padding: 28px 7% 24px;
+}
+
+.mobile-navigation-top,
+.mobile-navigation-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-navigation-top {
+  margin-bottom: 22px;
+}
+
+.mobile-navigation-top span:first-child {
+  color: #f8fafc;
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.mobile-navigation-top span:last-child,
+.mobile-navigation-footer {
+  color: rgba(248, 250, 252, 0.35);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.mobile-navigation-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-navigation-link {
+  display: grid;
+  grid-template-columns: 38px 1fr 24px;
+  align-items: center;
+  min-height: 66px;
+  color: rgba(248, 250, 252, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.mobile-navigation-link:hover,
+.mobile-navigation-link.active {
+  color: #f8fafc;
+}
+
+.mobile-link-number {
+  color: #438bff;
+  font-family: "Jost", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.mobile-link-label {
+  font-family: "Jost", sans-serif;
+  font-size: clamp(1.25rem, 5vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.mobile-link-arrow {
+  justify-self: end;
+  color: #438bff;
+  font-size: 1.15rem;
+  opacity: 0;
+  transform: translate(-5px, 5px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.mobile-navigation-link.active .mobile-link-arrow,
+.mobile-navigation-link:hover .mobile-link-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.mobile-navigation-footer {
+  padding-top: 25px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+  .navbar-inner {
+    padding: 0 5%;
+  }
+
+  .navbar-links {
+    gap: 18px;
+  }
+
+  .navbar-link {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-inner {
+    height: 72px;
+    padding: 0 6%;
+  }
+
+  .navbar-brand {
+    font-size: 1.85rem;
+  }
+
+  .navbar-links,
+  .navbar-cta {
+    display: none;
+  }
+
+  .navbar-menu-button {
+    display: flex;
+  }
+
+  .mobile-navigation {
+    display: block;
+  }
+
+  .mobile-navigation-inner {
+    padding-right: 6%;
+    padding-left: 6%;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-link,
+  .navbar-cta,
+  .navbar-cta svg,
+  .mobile-link-arrow {
+    transition: none;
+  }
+}
+
+
+.site-navbar {
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+/* Prevent the animated navbar from clipping its contents */
+.navbar-inner {
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-navbar {
+    will-change: auto;
+  }
+}

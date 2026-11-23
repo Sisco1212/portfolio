@@ -59,13 +59,42 @@ export const certifications: Certification[] = [
     credentialId: "",
     description:
       "A brief description of what this certification covers.",
-    skills: ["Unity", "C#"],
+    skills: ["JavaScript"],
     image: "/certifications/javascript-fundamentals-certificate.jpg",
     pdf: "/certifications/javascript-fundamentals-certificate.pdf",
+    verificationUrl: "https://coddy.tech/certifications/jhA5n5-javascript-Bi8cmJ",
+  },
+
+    {
+    id: 5,
+    title: "JavaScript Logic & Flow",
+    issuer: "Coddy Tech",
+    issueDate: "3 November, 2025",
+    credentialId: "",
+    description:
+      "A brief description of what this certification covers.",
+    skills: ["JavaScript"],
+    image: "/certifications/javascript-logic-and-flow-certificate.jpg",
+    pdf: "/certifications/javascript-logic-and-flow-certificate.pdf",
     verificationUrl: "",
   },
+
   {
-    id: 5,
+    id: 6,
+    title: "Introduction to Typescript",
+    issuer: "Coddy Tech",
+    issueDate: "16 June, 2025",
+    credentialId: "",
+    description:
+      "A brief description of what this certification covers.",
+    skills: ["JavaScript"],
+    image: "/certifications/introduction-to-typescript-certificate.jpg",
+    pdf: "/certifications/introduction-to-typescript-certificate.pdf",
+    verificationUrl: "",
+  },
+
+  {
+    id: 7,
     title: "AI Fundamentals",
     issuer: "IBM SkillsBuild",
     issueDate: "25 March, 2026",
@@ -78,7 +107,7 @@ export const certifications: Certification[] = [
     verificationUrl: "",
   },
   {
-    id: 6,
+    id: 8,
     title: "AI Literacy",
     issuer: "IBM SkillsBuild",
     issueDate: "25 March, 2026",
