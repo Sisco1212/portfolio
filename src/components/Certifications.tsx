@@ -5,12 +5,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 import {
-  FiArrowDown,
   FiArrowUpRight,
   FiDownload,
   FiExternalLink,
   FiAward,
-  FiX,
 } from "react-icons/fi";
 
 import {
