@@ -296,7 +296,7 @@ useGSAP(
   data-hero-action
   data-magnetic
   data-cursor="CONTACT"
-  href="/cv.pdf"
+  href="/CV.pdf"
   download
   className="hero-secondary-button"
 >
