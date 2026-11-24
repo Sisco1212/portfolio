@@ -1072,6 +1072,7 @@ h6 {
 
 .services-list {
   min-width: 0;
+  overflow-x: clip;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
