@@ -296,10 +296,11 @@ useGSAP(
   data-hero-action
   data-magnetic
   data-cursor="CONTACT"
-  href="#contact"
+  href="/cv.pdf"
+  download
   className="hero-secondary-button"
 >
-            Contact Me
+            Download CV
             <FiArrowUpRight />
           </a>
         </div>
