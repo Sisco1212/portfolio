@@ -671,7 +671,7 @@
   }
 
   .archive-heading-line {
-    font-size: clamp(3.5rem, 13vw, 6rem);
+    font-size: clamp(3.5rem, 10vw, 6rem);
   }
 
   .archive-intro {
